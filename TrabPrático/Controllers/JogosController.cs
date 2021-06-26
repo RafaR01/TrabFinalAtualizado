@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +13,10 @@ namespace TrabPrático.Controllers
     public class JogosController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly UserManager<IdentityUser> _userManager;
 
-        public JogosController(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public JogosController(ApplicationDbContext context)
         {
-             _context = context;
-            _userManager = userManager;
+            _context = context;
         }
 
         // GET: Jogos
@@ -28,34 +24,6 @@ namespace TrabPrático.Controllers
         {
             return View(await _context.Jogos.ToListAsync());
         }
-
-
-
-
-        // POST: Jogos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //[Authorize]
-        //public async Task<IActionResult> CreateComentario(int jogoId, string comentario, int nota)
-        //{
-        //    var utilizador = _context.Utilizador.Where(u => u.UserNameID == _userManager.GetUserId(User)).FirstOrDefault();
-
-        //    var comment = new Review
-        //    {
-        //        JogoFK = jogoId,
-        //        Comentario = comentario,
-        //        NotaReview = nota,
-        //        DataReview = DateTime.Now,
-        //        Visivel = true,
-        //        Utilizador = utilizador
-        //    };
-
-        //    _context.Add(comment);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Details), new { id = jogoId });
-        //}
 
         // GET: Jogos/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -155,8 +123,6 @@ namespace TrabPrático.Controllers
             {
                 return NotFound();
             }
-
-            var utilizador = _context.Utilizador.Firs(m => m.IdJogo == id);
 
             var jogos = await _context.Jogos
                 .FirstOrDefaultAsync(m => m.IdJogo == id);
